@@ -1,0 +1,104 @@
+1. 
+void setup() {
+pinMode(7,OUTPUT);
+
+pinMode(6,INPUT);
+}
+
+void loop() {
+boolean val = digitalRead(6);
+if(val)
+{
+   digitalWrite(7, HIGH);  
+   delay(100);                      
+  digitalWrite(7, LOW);  
+   delay(100);  
+  digitalWrite(7, HIGH);  
+   delay(100);                      
+  digitalWrite(7, LOW);  
+  delay(500);  
+                        
+}
+
+else
+{
+digitalWrite(7, HIGH);  
+  delay(250);                       
+  digitalWrite(7, LOW);    
+  delay(250);         
+  }
+}
+
+2.
+#define NUM 8
+int pins[NUM] = {8,9,10,11,12,13,14,15};
+#define t true
+#define f false
+boolean data[10][NUM] = {
+  {t, t, t, t, t, t, f, f}, 
+  {f, t, t, f, f, f, f, f}, 
+  {t, t, f, t, t, f, t, f}, 
+  {t, t, t, t, f, f, t, f}, 
+  {f, t, t, f, f, t, t, f}, 
+  {t, f, t, t, f, t, t, f}, 
+  {t, f, t, t, t, t, t, f}, 
+  {t, t, t, f, f, f, f, f}, 
+  {t, t, t, t, t, t, t, f}, 
+  {t, t, t, t, f, t, t, f}, 
+};
+
+void setup(){                
+  for(int i = 0; i < NUM; i++){
+    pinMode(pins[i], OUTPUT);    
+  } 
+}
+void writeNumber(int n){
+  for(int i = 0; i < NUM; i++){
+    digitalWrite(pins[i], data[n][i] == t ? HIGH : LOW);
+  }
+}
+
+void loop(){
+  for(int n = 0; n <= 9; n++){
+    writeNumber(n);
+    delay(500);
+  }
+}
+
+3.
+const byte potPin=A0;
+float val;
+float sensorValue;
+float sensorVoltage;
+float R1;	
+float R2;
+float R=1070000;
+float Vin=5;
+void setup() 
+{
+  pinMode(14,OUTPUT);
+   Serial.begin(9600);
+}
+
+void loop() 
+{
+  byte i;
+  for (i=0;i<=5;i++)
+  sensorValue = 0.7* sensorValue + 0.3* analogRead(A0);
+  sensorVoltage = sensorValue * 5 / 4095;
+  R1 = sensorVoltage *(R) / Vin ;
+  R2=R-R1;
+  sensorVoltage= Vin * R1 / (R1+R2);
+  val =analogRead(potPin);
+  Serial.print("analogRead=");
+  Serial.print(val);
+  Serial.print(" sensorVoltage=");
+  Serial.print(sensorVoltage);
+  Serial.print(" R=");
+  Serial.print(R);
+   Serial.print(" R1=");
+  Serial.print(R1);
+   Serial.print(" R2=");
+  Serial.println(R2);
+  delay(500);
+}
